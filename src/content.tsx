@@ -6,7 +6,7 @@ import Dropdown from "~components/Dropdown"
 import { useSelection } from "~hooks/useSelection"
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://www.plasmo.com/*"]
+  matches: ["https://*/*"]
 }
 
 export const getStyle = () => {
