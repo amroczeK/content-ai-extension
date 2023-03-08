@@ -1,4 +1,12 @@
+Simple Chrome extension developed in ReactJs TypeScript utilizing TailwindCSS and Plasmo, that allows you to select content on a page and run available prompts against ChatGPT with the selected content.
+
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+
+## Showcase
+
+![Alt text](./assets/selection-content.png?raw=true 'Selection')
+![Alt text](./assets/response.png?raw=true 'Response Preview') 
+
 
 ## Getting Started
 
