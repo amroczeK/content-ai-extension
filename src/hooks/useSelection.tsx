@@ -14,7 +14,9 @@ export const useSelection = (): ISelectionProps => {
   const selectionHandler = () => setSelection(getSelection())
 
   // Debounce handler to improve performance, preventing re-rendering of parent component using the useSelection hook.
-  // Without useMemo or useCallback, hook would cause re-rendering each time the selection changes.
+  // The selection handler is debounced and the selection is set 500ms after the user has made a selection on the browser.
+  // Without debouncing, useMemo or useCallback, the selection handler would be called on every selection change,
+  // causing multiple re-rendering as the mouse moves.
   const debouncedSelectionHandler = useMemo(
     () => debounce(selectionHandler, 500),
     []
