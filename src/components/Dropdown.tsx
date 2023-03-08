@@ -44,7 +44,7 @@ function Dropdown({ selectedText, answerHandler }: DropdownProps) {
   }
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left font-sans">
       <div>
         <DropdownButton onOpenHandler={onOpenHandler} />
       </div>

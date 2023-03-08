@@ -54,7 +54,7 @@ function Content() {
       ) : answer ? (
         <div className="z-50 flex fixed top-32 right-8">
           <div
-            className={`p-4 rounded-md max-w-[52ch] bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
+            className={`p-4 text-black font-sans rounded-md max-w-[52ch] bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
             <h2 className="text-md mb-2">Response</h2>
             <p>{answer}</p>
             <button
