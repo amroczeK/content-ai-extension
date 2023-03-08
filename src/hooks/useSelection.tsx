@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import debounce from "lodash.debounce"
+import { useEffect, useMemo, useState } from "react"
 
 import { getSelection } from "../utils/functions"
 
@@ -10,14 +11,21 @@ export interface ISelectionProps {
 export const useSelection = (): ISelectionProps => {
   const [selection, setSelection] = useState(getSelection())
 
+  const selectionHandler = () => setSelection(getSelection())
+
+  const debouncedSelectionHandler = useMemo(
+    () => debounce(selectionHandler, 500),
+    []
+  )
+
   useEffect(() => {
     document.addEventListener("selectionchange", () =>
-      setSelection(getSelection())
+      debouncedSelectionHandler()
     )
     // Clean up event listners on unmount to prevent unecessary updates or memory leaks
     return () => {
       document.removeEventListener("selectionchange", () =>
-        setSelection(getSelection())
+        debouncedSelectionHandler()
       )
     }
   }, [setSelection])
