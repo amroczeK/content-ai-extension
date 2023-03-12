@@ -5,6 +5,8 @@ import React, { CSSProperties, useEffect, useState } from "react"
 import Dropdown from "~components/Dropdown"
 import { useSelection } from "~hooks/useSelection"
 
+import "./style.css"
+
 export const config: PlasmoCSConfig = {
   matches: ["https://*/*"]
 }
