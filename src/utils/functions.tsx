@@ -1,6 +1,6 @@
-import type { ISelectionProps } from "~hooks/useSelection"
+import type { ISelection } from "~hooks/useSelection"
 
-export const getSelection = (): ISelectionProps => {
+export const getSelection = (): ISelection => {
   const selection = window.getSelection()
 
   if (!selection || selection.isCollapsed || selection.rangeCount === 0)

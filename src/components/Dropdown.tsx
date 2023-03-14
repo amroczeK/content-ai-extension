@@ -27,14 +27,14 @@ function Dropdown({ selectedText, answerHandler }: DropdownProps) {
   }
 
   return (
-    <div className="relative inline-block text-left font-sans">
+    <div className="relative w-28 inline-block text-left font-sans">
       <div>
         <DropdownButton onOpenHandler={onOpenHandler} />
       </div>
       <ul
         className={`absolute ${
           visible ? `visible` : `invisible`
-        } list-none left-0 p-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+        } list-none left-0 p-0 z-10 mt-1 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
