@@ -90,7 +90,7 @@ const ListItem = ({ id, children, onClickHandler }: ListItemProps) => (
     role="menuitem"
     tabIndex={-1}
     onClick={(event) => {
-      event.preventDefault() // Prevent de-selection of content on page
+      // console.log("CLICKED")
       onClickHandler()
     }}>
     {children}
