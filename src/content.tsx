@@ -44,7 +44,6 @@ function Content() {
     if (selected.rects.length) {
       let lastRect = selected.rects.at(-1) // Get last element of array
       setStyle({
-        position: "absolute",
         top: `${lastRect.bottom}px`,
         left: `${lastRect.right - 448}px` // Use width of component as offset
       })
@@ -52,11 +51,11 @@ function Content() {
     }
   }, [selected])
 
-  return selected.rects?.length && isOpen ? (
+  return selected.rects.length && isOpen ? (
     <div
       ref={contentRef}
       id="content-container"
-      className="z-50"
+      className="absolute z-50"
       style={{ ...style }}>
       <Form
         selectedText={selected.selectedText}
