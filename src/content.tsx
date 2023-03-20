@@ -1,8 +1,9 @@
 import cssText from "data-text:~style.css"
 import type { PlasmoCSConfig } from "plasmo"
-import React, { CSSProperties, useEffect, useState } from "react"
+import React, { CSSProperties, useEffect, useRef, useState } from "react"
 
 import Dropdown from "~components/Dropdown"
+import Form from "~components/Form"
 import { useSelection } from "~hooks/useSelection"
 
 import "./style.css"
@@ -17,6 +18,12 @@ export const getStyle = () => {
   return style
 }
 
+/**
+ * The user flow is as follows:
+ * 1. User makes selection and the component is rendered with information from the current selection.
+ * 2. The user can perform actions on the selection using the available actions in the rendered component.
+ * 3. The user must close the component before making a new selection.
+ */
 function Content() {
   const [style, setStyle] = useState<CSSProperties>({
     position: "absolute",
@@ -24,8 +31,10 @@ function Content() {
     left: 0
   })
   const [answer, setAnswer] = useState<string | null>(null)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  const selected = useSelection()
+  const contentRef = useRef<HTMLDivElement>(null)
+  const selected = useSelection(contentRef)
 
   const answerHandler = (response: string | null) => {
     setAnswer(response)
@@ -33,44 +42,42 @@ function Content() {
 
   useEffect(() => {
     if (selected.rects.length) {
-      let lastRect = selected.rects[selected.rects.length - 1]
+      let lastRect = selected.rects.at(-1) // Get last element of array
       setStyle({
-        position: "absolute",
-        top: lastRect.y,
-        left: lastRect.x + lastRect.width
+        top: `${lastRect.bottom}px`,
+        left: `${lastRect.right - 448}px` // Use width of component as offset
       })
+      setIsOpen(true)
     }
   }, [selected])
 
-  return (
-    <>
-      {selected.rects?.length ? (
-        <div id="button-container" className="z-50" style={{ ...style }}>
-          <div className="ml-2">
-            <Dropdown
-              selectedText={selected.selectedText}
-              answerHandler={answerHandler}
-            />
-          </div>
+  return selected.rects.length && isOpen ? (
+    <div
+      ref={contentRef}
+      id="content-container"
+      className="absolute z-50"
+      style={{ ...style }}>
+      <Form
+        selectedText={selected.selectedText}
+        answerHandler={answerHandler}
+        closeHandler={() => {
+          answerHandler(null)
+          setIsOpen(false)
+        }}
+      />
+      {answer && (
+        <div className="base mt-2">
+          <label
+            className="block text-sm font-bold text-gray-700"
+            htmlFor="custom-prompt">
+            Answer
+          </label>
+          <p>{answer}</p>
         </div>
-      ) : answer ? (
-        <div className="z-50 flex fixed top-32 right-8">
-          <div
-            className={`p-4 text-black font-sans rounded-md max-w-[52ch] bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
-            <h2 className="text-md mb-2">Response</h2>
-            <p>{answer}</p>
-            <button
-              type="button"
-              className="cursor-pointer w-fit rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600"
-              onClick={() => answerHandler(null)}>
-              Close
-            </button>
-          </div>
-        </div>
-      ) : (
-        <></>
       )}
-    </>
+    </div>
+  ) : (
+    <></>
   )
 }
 

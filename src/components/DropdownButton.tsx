@@ -12,7 +12,10 @@ function DropdownButton({ onOpenHandler }: Props) {
       id="menu-button"
       aria-expanded="true"
       aria-haspopup="true"
-      onClick={onOpenHandler}>
+      onClick={(event) => {
+        event.preventDefault() // Prevent de-selection of content on page
+        onOpenHandler()
+      }}>
       Options
       <svg
         className="-mr-1 h-5 w-5 text-gray-400"
