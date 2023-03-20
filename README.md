@@ -8,8 +8,7 @@ When running the chrome extension in local development or production, create a `
 
 ## Showcase
 
-![Alt text](./assets/selection-content.png?raw=true 'Selection')
-![Alt text](./assets/response.png?raw=true 'Response Preview') 
+![Alt text](./assets/extension.png?raw=true 'Selecting keywords prompt and response')
 
 
 ## Getting Started
