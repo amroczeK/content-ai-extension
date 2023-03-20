@@ -7,20 +7,7 @@ import {
   useState
 } from "react"
 
-//import { getSelection } from "../utils/functions"
-
-export const getSelection = (): ISelection => {
-  const selection = window.getSelection()
-
-  if (!selection || selection.isCollapsed || selection.rangeCount === 0)
-    return { selection: null, rects: [], selectedText: null }
-
-  return {
-    selection: selection.getRangeAt(0),
-    rects: Array.from(selection.getRangeAt(0).getClientRects()),
-    selectedText: selection.getRangeAt(0).toString()
-  }
-}
+import { getSelection } from "../utils/functions"
 
 export interface ISelection {
   selection: Range | null
@@ -37,24 +24,25 @@ export const useSelection = (
     selectedText: null
   })
 
+  /**
+   *  The seleionchange event listener is called when textarea is focused, resetting
+   *  the selection as nothing selected, causing the rendered extension to disappear.
+   *
+   *  Call setSelection only if the extension component isn't rendered, preventing the
+   *  selection attributes from being reset and causing the component to disappear to user.
+   *
+   *  This is an alternative to using event.preventDefault on child elements, alternatively
+   *  it would be better to add another event listener for click events in conjunction with
+   *  ref.current.contains(event.target) and prevent the selectionchange event listener from
+   *  firing. But during implementation of this solution I ran into issues with plasmo-overlay
+   *  in the shadow dom unexpectidely not having the current ref as a child element.
+   *
+   *  So this solution will have to do with the current user flow until I come up with a better solution.
+   * 
+   *  TODO: Figure out why event.target didn't have expected current ref element as child.
+   */
   const selectionHandler = useCallback(() => {
-    const plasmoCsui = document.querySelector("plasmo-csui")
-    if (plasmoCsui) {
-      const plasmoShadowContainer = plasmoCsui.shadowRoot.getElementById(
-        "plasmo-shadow-container"
-      )
-      if (plasmoShadowContainer) {
-        const plasmoOverlay0 =
-          plasmoShadowContainer.querySelector("#plasmo-overlay-0")
-        if (
-          plasmoOverlay0 &&
-          !ref.current &&
-          !plasmoOverlay0.contains(ref.current)
-        ) {
-          setSelection(getSelection())
-        }
-      }
-    }
+    if (ref?.current?.id !== "content-container") setSelection(getSelection())
   }, [setSelection, ref])
 
   const debouncedSelectionHandler = useMemo(
@@ -69,7 +57,7 @@ export const useSelection = (
     return () => {
       document.removeEventListener("selectionchange", debouncedSelectionHandler)
     }
-  }, [])
+  }, [debouncedSelectionHandler])
 
   return selection
 }

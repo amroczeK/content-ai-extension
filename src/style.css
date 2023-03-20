@@ -3,3 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.base {
+  @apply relative w-[28rem] rounded bg-white p-4 shadow ring-1 ring-black ring-opacity-5;
+}

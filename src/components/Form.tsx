@@ -19,16 +19,19 @@ const Form = ({ selectedText, closeHandler, answerHandler }: Props) => {
     text: string
     prompt: string
   }) => {
-    answerHandler(null) // Reset
-    setLoading(true)
-    await queryChatGPT({ text, prompt, callback: answerHandler })
-    setLoading(false)
+    try {
+      setLoading(true)
+      const { message } = await queryChatGPT({ text, prompt })
+      answerHandler(message)
+      setLoading(false)
+    } catch (error) {
+      answerHandler(null)
+      setLoading(false)
+    }
   }
 
   return (
-    <div
-      id="form-container"
-      className="relative w-[28rem] rounded bg-white p-4 shadow">
+    <div id="form-container" className="base relative mt-2">
       <div className="absolute top-0 right-0 mt-1 mr-1">
         <button
           type="button"
@@ -75,7 +78,7 @@ const Form = ({ selectedText, closeHandler, answerHandler }: Props) => {
           </p>
           <div className="flex gap-1">
             <textarea
-              className="bg-white focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow outline-none focus:border-blue-400 min-h-[4rem]"
+              className="bg-white focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 outline-none focus:border-blue-400 min-h-[4rem]"
               id="custom-prompt"
               placeholder="Ask a question"
               wrap="soft"
@@ -109,6 +112,9 @@ const Form = ({ selectedText, closeHandler, answerHandler }: Props) => {
               )}
             </button>
           </div>
+          <p className="mt-1 text-xs text-gray-500">
+            NOTE: Responses may be slower than expected due to server load.
+          </p>
         </div>
         <div>
           <label className="block text-sm font-bold text-gray-700">

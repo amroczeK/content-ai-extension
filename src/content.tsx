@@ -18,6 +18,12 @@ export const getStyle = () => {
   return style
 }
 
+/**
+ * The user flow is as follows:
+ * 1. User makes selection and the component is rendered with information from the current selection.
+ * 2. The user can perform actions on the selection using the available actions in the rendered component.
+ * 3. The user must close the component before making a new selection.
+ */
 function Content() {
   const [style, setStyle] = useState<CSSProperties>({
     position: "absolute",
@@ -36,11 +42,11 @@ function Content() {
 
   useEffect(() => {
     if (selected.rects.length) {
-      let lastRect = selected.rects[selected.rects.length - 1]
+      let lastRect = selected.rects.at(-1) // Get last element of array
       setStyle({
         position: "absolute",
-        top: lastRect.y + lastRect.height,
-        left: lastRect.x + lastRect.width - 448 // Subtract fixed width of form
+        top: `${lastRect.bottom}px`,
+        left: `${lastRect.right - 448}px` // Use width of component as offset
       })
       setIsOpen(true)
     }
@@ -50,7 +56,7 @@ function Content() {
     <div
       ref={contentRef}
       id="content-container"
-      className="z-50 flex flex-col gap-2 mt-2"
+      className="z-50"
       style={{ ...style }}>
       <Form
         selectedText={selected.selectedText}
@@ -61,12 +67,11 @@ function Content() {
         }}
       />
       {answer && (
-        <div
-          className={`p-4 rounded min-w-[32ch] max-w-[52ch] bg-white shadow ring-1 ring-black ring-opacity-5 focus:outline-none`}>
+        <div className="base mt-2">
           <label
             className="block text-sm font-bold text-gray-700"
             htmlFor="custom-prompt">
-            Selected text
+            Answer
           </label>
           <p>{answer}</p>
         </div>
