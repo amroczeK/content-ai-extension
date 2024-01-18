@@ -2,6 +2,8 @@ Simple Chrome extension developed in ReactJs TypeScript utilizing TailwindCSS an
 
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
+NOTE: This personal project was rushed as a learning/upskilling exercise and is not production quality.
+
 ## Prerequisite before running in development or building to production
 When running the chrome extension in local development or production, create a `.env.development` and `.env.production` file and use refer to `.env.example` on how to populate it. Initialize `CRX_PUBLIC_KEY` with your ChatGPT API Key in order your the requests to be successful.
 
